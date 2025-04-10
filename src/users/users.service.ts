@@ -18,4 +18,13 @@ export class UsersService {
     const user = this.usersRepository.create(userData);
     return this.usersRepository.save(user);
   }
+
+  async findAll(): Promise<Partial<User>[]> {
+    const users = await this.usersRepository.find();
+    // Exclude sensitive information like passwords
+    return users.map(user => {
+      const { password, ...result } = user;
+      return result;
+    });
+  }
 } 
